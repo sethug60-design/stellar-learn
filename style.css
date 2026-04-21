@@ -1,0 +1,536 @@
+/* ============================================================
+   ConceptLab – style.css
+   A clean, modern dark-accented design for a learning app.
+   Colors, fonts, and spacing are all controlled here.
+   ============================================================ */
+
+
+/* ---- 1. CSS VARIABLES (like a color palette / theme settings) ---- */
+:root {
+  --bg:          #f4f6fb;        /* Page background (light grey-blue) */
+  --surface:     #ffffff;        /* Card / panel background */
+  --surface2:    #eef1f8;        /* Subtle secondary background */
+  --border:      #dde3f0;        /* Border color */
+  --accent:      #5c6ef8;        /* Main brand color (purple-blue) */
+  --accent-dark: #3a4fd6;        /* Darker accent for hover states */
+  --accent-glow: rgba(92,110,248,0.18);
+  --text:        #1a1d2e;        /* Main text (almost black) */
+  --text-soft:   #6b7280;        /* Softer/secondary text */
+  --success:     #22c55e;        /* Green for correct answers */
+  --error-color: #ef4444;        /* Red for wrong answers / errors */
+  --radius:      14px;           /* How rounded corners are */
+  --shadow:      0 4px 24px rgba(92,110,248,0.10);
+  --font-head:   'Syne', sans-serif;
+  --font-body:   'DM Sans', sans-serif;
+}
+
+
+/* ---- 2. RESET & BASE ---- */
+*, *::before, *::after {
+  box-sizing: border-box;   /* padding doesn't add to width */
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;   /* stack header, main, footer vertically */
+}
+
+/* ---- 3. HEADER ---- */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  /* Subtle spin animation on load */
+  animation: pop 0.6s ease;
+}
+
+.logo-text {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tagline {
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  margin-left: auto;  /* pushes it to the right */
+}
+
+
+/* ---- 4. MAIN LAYOUT ---- */
+.main {
+  flex: 1;
+  max-width: 780px;       /* keeps content readable, not too wide */
+  width: 100%;
+  margin: 36px auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+
+/* ---- 5. INPUT CARD ---- */
+.input-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Each label + input pair */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Shared style for <select> and <textarea> */
+.field-group select,
+.field-group textarea {
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--surface2);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;   /* textarea can be resized up/down */
+  outline: none;
+}
+
+/* When focused (clicked), highlight with accent color */
+.field-group select:focus,
+.field-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* The big Generate button */
+.generate-btn {
+  padding: 14px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.generate-btn:hover {
+  background: var(--accent-dark);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.generate-btn:active {
+  transform: scale(0.98);   /* tiny press-down feel */
+}
+
+/* Error message */
+.error-msg {
+  color: var(--error-color);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+
+/* ---- 6. OUTPUT SECTION ---- */
+.output-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  /* Fade-in animation when revealed */
+  animation: fadeSlideUp 0.4s ease;
+}
+
+
+/* ---- 7. TAB BAR ---- */
+.tab-bar {
+  display: flex;
+  overflow-x: auto;             /* scroll sideways on small screens */
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+  scrollbar-width: none;        /* hide scrollbar (Firefox) */
+}
+.tab-bar::-webkit-scrollbar { display: none; }  /* hide scrollbar (Chrome) */
+
+.tab-btn {
+  flex-shrink: 0;               /* don't let tabs squish */
+  padding: 14px 20px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;   /* placeholder for active line */
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  color: var(--accent);
+}
+
+/* The currently selected tab gets an underline + accent color */
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+
+/* ---- 8. TAB PANELS ---- */
+.tab-panel {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Each content block inside a panel */
+.panel-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel-block h3,
+.panel-title {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.panel-hint {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  margin-top: -16px;  /* pull it closer to title */
+}
+
+/* The text output areas */
+.output-text {
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.output-text.placeholder-text {
+  color: var(--text-soft);
+  font-style: italic;
+}
+
+
+/* ---- 9. FLASHCARDS ---- */
+.flashcard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+/* Each individual flashcard */
+.flashcard {
+  width: 200px;
+  height: 130px;
+  cursor: pointer;
+  perspective: 1000px;  /* needed for 3D flip */
+  flex-shrink: 0;
+}
+
+/* The inner div does the actual flipping */
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+  border-radius: 12px;
+}
+
+/* When card is "flipped" (JS adds this class) */
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front and back share these styles */
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  backface-visibility: hidden;   /* hide when rotated away */
+}
+
+.flashcard-front {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.flashcard-back {
+  background: var(--surface2);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  transform: rotateY(180deg);    /* start flipped so only front shows */
+}
+
+.flashcard-placeholder {
+  color: var(--text-soft);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+
+/* ---- 10. QUIZ ---- */
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.quiz-question {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.quiz-question p {
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+/* Each option is a label wrapping a radio + text */
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s;
+}
+.quiz-option:hover {
+  background: var(--accent-glow);
+}
+
+.quiz-option input[type="radio"] {
+  accent-color: var(--accent);  /* color the radio button */
+}
+
+/* After checking, correct = green, wrong = red */
+.quiz-option.correct { background: rgba(34,197,94,0.15); border-radius: 7px; }
+.quiz-option.wrong   { background: rgba(239,68,68,0.15);  border-radius: 7px; }
+
+.quiz-submit-btn {
+  margin-top: 8px;
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+.quiz-submit-btn:hover { background: var(--accent-dark); }
+
+.quiz-result {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--accent);
+}
+
+
+/* ---- 11. CHAT ---- */
+.chat-window {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  height: 240px;
+  overflow-y: auto;          /* scroll when messages overflow */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* A single chat bubble */
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.ai-bubble {
+  background: var(--accent);
+  color: #fff;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.user-bubble {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+/* Chat input row */
+.chat-input-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.chat-input-row input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  background: var(--surface2);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.chat-input-row input:focus { border-color: var(--accent); }
+
+.chat-send-btn {
+  padding: 11px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-send-btn:hover { background: var(--accent-dark); }
+
+
+/* ---- 12. LOADING SPINNER ---- */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+
+/* ---- 13. FOOTER ---- */
+.footer {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
+
+
+/* ---- 14. UTILITY CLASSES ---- */
+.hidden {
+  display: none !important;
+}
+
+
+/* ---- 15. ANIMATIONS ---- */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  80%  { transform: scale(1.15); }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+
+/* ---- 16. RESPONSIVE (mobile friendly) ---- */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .tagline { margin-left: 0; }
+
+  .main { margin: 20px auto; }
+
+  .input-card { padding: 20px; }
+  .tab-panel  { padding: 18px; }
+
+  .tab-btn { padding: 12px 14px; font-size: 0.82rem; }
+
+  .flashcard { width: 160px; height: 110px; }
+}
